@@ -1,0 +1,227 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+# See http://manual.macromates.com/en/language_grammars
+
+name: FileMaker
+file_extensions:
+  - txt
+scope: text.plain
+contexts:
+  main:
+
+    # comment — for comments.
+    - match: '(//).*?($\n?)'
+      scope: comment.line.plain
+      push: comment_line
+    - match: '/\*'
+      scope: comment.block.begin.plain
+      push: comment_block
+
+
+    # constant — various forms of constants.
+    - match: '\b-?[1-9]\d*(\.[0-9]+)?\b'
+      scope: constant.numeric.filemaker
+    - match: ''
+      scope: constant.character.plain
+    - match: '(?i)\b(AccountName|ActiveFieldContents|ActiveFieldName|ActiveFieldTableName|ActiveLayoutObjectName|ActiveModifierKeys|ActiveRepetitionNumber|ActiveSelectionSize|ActiveSelectionStart|AllowAbortState|AllowToolbarState|ApplicationLanguage|ApplicationVersion|CalculationRepetitionNumber|CurrentDate|CurrentHostTimestamp|CurrentTime|CurrentTimestamp|CustomMenuSetName|DesktopPath|DocumentsPath|DocumentsPathListing|ErrorCaptureState|ExtendedPrivileges|FileMakerPath|FileName|FilePath|FileSize|FoundCount|HighContrastColor|HighContrastState|HostApplicationVersion|HostIPAddress|HostName|LastError|LastMessageChoice|LastODBCError|LayoutAccess|LayoutCount|LayoutName|LayoutNumber|LayoutTableName|LayoutViewState|MultiUserState|NetworkProtocol|PageNumber|PortalRowNumber|PreferencesPath|PrinterName|PrivilegeSetName|RecordAccess|RecordID|RecordModificationCount|RecordNumber|RecordOpenCount|RecordOpenState|RequestCount|RequestOmitState|ScreenDepth|ScreenHeight|ScreenWidth|ScriptName|ScriptParameter|ScriptResult|SortState|StatusAreaState|SystemDrive|SystemIPAddress|SystemLanguage|SystemNICAddress|SystemPlatform|SystemVersion|TemporaryPath|TextRulerVisible|TotalRecordCount|TriggerKeystroke|TriggerModifierKeys|UserCount|UserName|UseSystemFormatsState|WindowContentHeight|WindowContentWidth|WindowDesktopHeight|WindowDesktopWidth|WindowHeight|WindowLeft|WindowMode|WindowName|WindowTop|WindowVisible|WindowWidth|WindowZoomLevel|Roman|Greek|Cryllic|CentralEurope|ShiftJIS|TraditionalChinese|SimplifiedChinese|OEM|Symbol|Other|Plain|Bold|Italic|Underline|Condense|Extend|Strikethrough|SmallCaps|Superscript|Subscript|Uppercase|Lowercase|Titlecase|WordUnderline|DoubleUnderline|AllStyles|objectType|hasFocus|containsFocus|isFrontTabPanel|bounds|left|right|top|bottom|width|height|rotation|startPoint|endPoint|source|content|enclosingObject|containedObjects|ConnectionState|InstalledFMPlugins|PersistentID|UUID|WindowStyle|ConnectionAttributes|ContainerAttribute|Device|EncryptionState|ModifiedFields|NetworkType|ScriptAnimationState|TriggerGestureInfo|WindowOrientation)\b'
+      scope: constant.language.filemaker
+    - match: '\b(?:True|true|False|false)\b'
+      scope: constant.language.boolean.filemaker
+    - match: ''
+      scope: constant.other.plain
+
+
+    # entity — an entity refers to a larger part of the document, for example a chapter, class, function, or tag.
+    - match: ''
+      scope: entity.name.plain
+    - match: ''
+      scope: entity.other.plain
+
+
+    # invalid — stuff which is “invalid”.
+    - match: ''
+      scope: invalid.illegal.plain
+    - match: ''
+      scope: invalid.deprecated.plain
+
+
+    # keyword — keywords (when these do not fall into the other groups).
+    - match: '(\-|\+|\*|/)'
+      scope: keyword.operator.arithmetic.filemaker
+    - match: '\b(and|or|xor|not)\b'
+      scope: keyword.operator.logical.filemaker
+    - match: '(=|<=|≤|>=|≥|<>|≠|<|>)'
+      scope: keyword.operator.comparison.filemaker
+    - match: '&'
+      scope: keyword.operator.string.filemaker
+    - match: '='
+      scope: keyword.operator.assignment.filemaker
+    - match: '¶|\^|\?|\*'
+      scope: keyword.other.plain
+    - include: keyword_other
+
+
+    # markup — this is for markup languages and generally applies to larger subsets of the text.
+    - match: ''
+      scope: markup.underline.plain
+    - match: ''
+      scope: markup.bold.plain
+    - match: ''
+      scope: markup.heading.plain
+    - match: ''
+      scope: markup.italic.plain
+    - match: ''
+      scope: markup.list.plain
+    - match: ''
+      scope: markup.quote.plain
+    - match: ''
+      scope: markup.raw.plain
+    - match: ''
+      scope: markup.other.plain
+
+
+    # meta — the meta scope is generally used to markup larger parts of the document.
+    - match: ''
+      scope: meta.plain
+
+
+    # storage — things relating to “storage”.
+    - match: ''
+      scope: storage.type.plain
+    - match: ''
+      scope: storage.modifier.plain
+
+
+    # string — strings.
+    - match: '"'
+      scope: string.quoted.double.begin.plain
+      push: string_quoted_double
+    - match: ''
+      scope: string.unquoted.begin.plain
+#     push: string_unquoted
+    - match: ''
+      scope: string.interpolated.begin.plain
+#     push: string_interpolated
+    - match: ''
+      scope: string.regexp.begin.plain
+#     push: string_regexp
+    - match: '\(|\)|\[|\]|\{|\}'
+      scope: string.other.plain
+#     push: string_other
+
+
+    # support - things provided by a framework or library should be below support.
+    - match: ''
+      scope: support.function.plain
+    - match: ''
+      scope: support.class.plain
+    - match: ''
+      scope: support.type.plain
+    - match: ';|!|::'
+      scope: support.constant.plain
+    - match: ''
+      scope: support.variable.plain
+    - match: ''
+      scope: support.other.plain
+    - include: support_function
+
+
+    # variable — variables. Not all languages allow easy identification (and thus markup) of these.
+    - match: '\$|\$$|~'
+      scope: variable.parameter.plain
+      push: variable_parameter
+    #- match: ''
+    #  scope: variable.language.plain
+    #  push: variable_language
+    #- match: ''
+    #  scope: variable.other.plain
+    #  push: variable_other
+
+
+################################################################################
+
+
+# comment
+  comment_line:
+    - meta_scope: comment.line.end.plain
+    - match: $
+      pop: true
+  comment_block:
+    - meta_scope: comment.block.end.plain
+    - match: '([^/]|[^*]/|\r|\n)*\*/'
+      scope: comment.block.plain
+      pop: true
+
+
+# constant
+
+
+# entity
+
+
+# invalid
+
+
+# keyword
+  keyword_other:
+    - match: '\b(global|GLOBAL|data|valueList|tableName|layoutName|value|result|test|defaultResult|text|searchString|replaceString|type|name|parameters|calculation|expression|expression1|expression2|var|var1|var2|valueNumber|listOfValues)\b'
+      scope: keyword.other.plain
+
+
+# markup
+
+
+# meta
+
+
+# storage
+
+
+# string
+  string_quoted_double:
+    - meta_scope: string.quoted.double.end.plain
+    - match: '\\.'
+      scope: constant.character.escape.plain
+    - match: '"'
+      scope: string.quoted.double.plain
+      pop: true
+  string_unquoted:
+    - meta_scope: string.unquoted.end.plain
+    - match: ''
+      pop: true
+  string_interpolated:
+    - meta_scope: string.interpolated.end.plain
+    - match: ''
+      pop: true
+  string_regexp:
+    - meta_scope: string.regexp.end.plain
+    - match: ''
+      pop: true
+  string_other:
+    - meta_scope: string.other.end.plain
+    - match: ''
+      pop: true
+
+
+# support
+  support_function:
+    - match: '\b(Average|Count|List|Max|Min|StDev|StDevP|Sum|Variance|VarianceP|Date|Day|DayName|DayNameJ|DayOfWeek|DayOfYear|Month|MonthName|MonthNameJ|WeekOfYear|WeekOfYearFiscal|Year|YearName|DatabaseNames|FieldBounds|FieldComment|FieldIDs|FieldNames|FieldRepetitions|FieldStyle|FieldType|GetNextSerialValue|LayoutIDs|LayoutNames|LayoutObjectNames|RelationInfo|ScriptIDs|ScriptNames|TableIDs|TableNames|ValueListIDs|ValueListItems|ValueListNames|WindowNames|External|FV|NPV|PMT|PV|Case|Choose|Evaluate|EvaluationError|GetAsBoolean|GetField|GetFieldName|GetLayoutObjectAttribute|GetNthRecord|If|IsEmpty|IsValid|IsValidExpression|Let|Lookup|LookupNext|Self|Abs|Ceiling|Combination|Div|Exp|Factorial|Floor|Int|Lg|Ln|Log|Mod|Random|Round|SetPrecision|Sign|Sqrt|Truncate|Extend|GetRepetition|Last|GetSummary|Char|Code|Exact|Filter|FilterValues|GetAsCSS|GetAsDate|GetAsNumber|GetAsSVG|GetAsText|GetAsTime|GetAsTimestamp|GetAsURLEncoded|GetValue|Hiragana|KanaHankaku|KanaZenkaku|KanjiNumeral|Katakana|Left|LeftValues|LeftWords|Length|Lower|Middle|MiddleValues|MiddleWords|NumToJText|PatternCount|Position|Proper|Quote|Replace|Right|RightValues|RightWords|RomanHankaku|RomanZenkaku|SerialIncrement|Substitute|Trim|TrimAll|Upper|ValueCount|WordCount|RGB|TextColor|TextColorRemove|TextFont|TextFontRemove|TextFormatRemove|TextSize|TextSizeRemove|TextStyleAdd|TextStyleRemove|Hour|Minute|Seconds|Time|Timestamp|Acos|Asin|Atan|Cos|Degrees|Pi|Radians|Sin|Tan|Get|GetHeight|GetThumbnail|GetWidth|VerifyContainer|ExecuteSQL|Location|LocationValues|Base64Decode|Base64Encode|CurrentTimeUTCMilliseconds)\b'
+      scope: support.function.builtin_functions.filemaker
+    - match: '#\s|#Assign\b|#AssignGlobal\b|#Remove\b|#List\b|#Get\b|#Filter\b|#ListGet\b|#GetNameList\b|#ArrayFromList\b'
+      scope: support.function.external_functions.filemaker
+
+
+# variable
+  variable_parameter:
+    - meta_scope: variable.parameter.end.plain
+    - match: \s
+      pop: true
+  #variable_language:
+  #  - meta_scope: variable.language.end.plain
+  #  - match: \s
+  #    pop: true
+  #variable_other:
+  #  - meta_scope: variable.other.end.plain
+  #  - match: \s
+  #    pop: true
