@@ -1,7 +1,7 @@
 filemaker-syntax
 ================
 
-Filemaker Sublime Syntax Highlighting
+FileMaker Sublime Syntax Highlighting
 
 Getting Started
 ===============
