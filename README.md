@@ -10,7 +10,7 @@ clone
 -----
 
     cd Library/Application Support/Sublime Text 3/Packages
-    git clone https://github.com/trhrkmk/filemaker-syntax.git
+    git clone https://github.com/frudens/filemaker-syntax.git
 
 edit filemaker.sublime-settings
 -------------------------------
@@ -28,7 +28,7 @@ edit filemaker.sublime-settings
 image
 -----
 
-![filemaker-sublime-syntax](https://frudens.jp/wp-content/uploads/2017/03/filemaker-sublime-syntax.png)
+![filemaker-syntax](image.png)
 
 Contact
 =======
